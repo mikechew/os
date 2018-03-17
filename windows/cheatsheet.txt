@@ -1,0 +1,6 @@
+Setting up scheduled tasks in Windows:
+schtasks /query /fo LIST /v
+schtasks /query /v
+schtasks /delete /TN ETL
+schtasks /create /SC MINUTE /MO 2 /TN ETL /IT /TR "c:\etl.bat" /ST 18:20 /ET 18:36
+
