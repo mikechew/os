@@ -31,7 +31,7 @@ apt-get install openjdk-7-jdk
 
 6) To verify if Java is successfully installed, check the version of Java installed:
 ```
-java -version
+# java -version
 ```
 
 7) Now we are ready to install Jenkins, add the key to apt:
@@ -67,13 +67,18 @@ service jenkins restart
 CentOS
 ------
 1. Install latest version of Java and remove previously installed versions:
+```
 yum search java-1.8.0-openjdk
 java -version
-yum erase java-1.6.0-openjdk.x86_64
+yum erase java-1.6.0-openjdk.x86_64 , or yum remove java-1.6.0-openjdk
 java -version
 yum install java-1.8.0-openjdk.x86_64
+```
 
-
+List all the Java related RPM packages:
+```
+# rpm -qa | grep -E '^open[jre|jdk]|j[re|dk]'
+```
 
 MacOS
 -----
