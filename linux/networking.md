@@ -42,21 +42,29 @@ c) netstat –rn  { equivalent to cat /proc/net/route }
 4) To set date and time:
 
 To set the new date and time:
+```
 # date -s "2 OCT 2006 18:00:00"
+```
 
 Or, set using the date format:
+```
 # date +%Y%m%d -s "20151128"
+```
 
 To set the hardware clock to the current system time:
+```
 # hwclock --systohc
+```
 
 To set the system time to the hardware clock:
+```
 # hwclock --hctosys
+```
 
 To display the hardware clock:
+```
 # hwclock --show
-
-
+```
 
 Networking related files:
 -------------------------
