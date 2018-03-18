@@ -35,9 +35,11 @@ Confirm the new time-zone is in place:
 3) To display the routing table:
 
 Use the following to display the routing table:
+```
 1. route -n
 2. ip route list
 3. netstat –rn  { equivalent to cat /proc/net/route }
+```
 
 4) To set date and time:
 
