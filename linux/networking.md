@@ -66,6 +66,40 @@ To display the hardware clock:
 # hwclock --show
 ```
 
+5) Setting an IP address:
+
+To set the IP address 10.10.10.2 to a network interface (eth0):
+```
+ifconfig eth0 10.10.10.2 netmask 255.255.255.0  broadcast 10.10.10.255 up
+route add default gw 10.10.10.1
+```
+
+To restart the networking by entering the following commands:
+```
+ifdown eth0 , or ifconfig eth0 down
+ifup eth0 , or ifconfig eth0 up
+```
+
+To restart all the interfaces
+```
+service network restart
+/etc/init.d/network restart
+```
+
+To confirm the IP address is in place:
+```
+# ifconfig eth0 , or ifconfig -a eth0
+# ifconfig | grep "inet " | egrep -v "127.0.0.1"
+```
+
+You can check the system log /var/log/messages to make sure the network interfaces are functioning.
+
+6) Ping test:
+To test pinging from a specific interface:
+```
+# ping  58.162.139.65 -I eth1
+```
+
 Networking related files:
 -------------------------
 1) DNS file: /etc/resolv.conf
@@ -83,6 +117,12 @@ HOSTNAME=hostname.domainname
 GATEWAY=10.10.10.1 
 NETWORKING_IPV6=yes 
 IPV6_AUTOCONF=no
+
+Route all traffic via 192.168.1.254 gateway connected via eth0 network interface. The following command will set a default gateway for both internal and external network (if any):
+```
+# route add default gw 192.168.1.254 eth0  , or
+# ip route add 192.168.1.0/24 dev eth0
+```
 
 3) eth0/1/../n configuration file: /etc/sysconfig/network-scripts/ifcfg-eth0 
 
@@ -120,6 +160,17 @@ The below statement will send traffic to the subnet 192.168.200.0/24 via the eth
 192.168.200.0/24 via 0.0.0.0 dev eth1
 
 echo '10.0.0.0/8 via 10.8.2.65' >> /etc/sysconfig/network-scripts/route-eth0
+
+If you need to add it from command line:
+
+To add static route using “route add” in command line:
+```
+# route add -net 192.168.100.0 netmask 255.255.255.0 gw 192.168.10.1 dev eth0
+```
+To add static route using “ip route” command:
+```
+# ip route add 192.168.100.0/24 via 192.168.10.1 dev eth1
+```
 
 Actifio integrating with Linux hosts:
 -------------------------------------
