@@ -53,6 +53,18 @@ Or, set using the date format:
 # date +%Y%m%d -s "20151128"
 ```
 
+To set the date to 19th July 2013. The command is as follow:
+```
+# date --set="20130719" 
+Fri Jul 19 00:00:00 BST 2013
+```
+
+To set the time to 14.10. The command is as follow:
+```
+# date +%T -s "14:10:34"
+14:10:34
+```
+
 To set the hardware clock to the current system time:
 ```
 # hwclock --systohc
