@@ -125,6 +125,36 @@ Assuming you want to change the MAC id for eth0:
 # ip route get 144.130.49.54
 ```
 
+Firewall:
+---------
+Update the firewall config by editing /etc/sysconfig/iptables and add line that allows TCP port 80/443 for Apache:
+```
+vi /etc/sysconfig/iptables
+## open port 80 /443 ## 
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT 
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT 
+
+# /etc/init.d/iptables restart or service iptables restart 
+
+service iptables stop
+service iptables start
+service iptables status
+```
+
+For Actifio connectors on the host, enable port 5106 and 56789:
+```
+iptables -I INPUT -i eth0 -p tcp -s 172.24.50.44/32 --dport 5106 -j ACCEPT
+iptables -I OUTPUT -p tcp --sport 5106 -j ACCEPT
+iptables -I INPUT -i eth0 -p tcp -s 172.24.50.44/32 --dport 56789 -j ACCEPT
+iptables -I OUTPUT -p tcp --sport 56789 -j ACCEPT
+iptables -I INPUT -p tcp -m tcp --dport 56789 -j ACCEPT
+iptables -I INPUT -p tcp -m tcp --dport 5106 -j ACCEPT
+```
+
+Save the current rules:
+```
+service iptables save 
+```
 
 Networking related files:
 -------------------------
