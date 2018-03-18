@@ -66,11 +66,59 @@ service jenkins restart
 
 CentOS
 ------
+1. Install latest version of Java and remove previously installed versions:
+yum search java-1.8.0-openjdk
+java -version
+yum erase java-1.6.0-openjdk.x86_64
+java -version
+yum install java-1.8.0-openjdk.x86_64
 
 
 
 MacOS
 -----
+1. Install Java
+
+If Java is installed, it will display the version of the software:
+```
+java -version
+```
+Otherwise, it will prompt you whether you want to install it.
+
+2. Create the Jenkins user 
+
+```
+# create an applications group
+dseditgroup -o create -n . -u username -p -r ‘Applications’ applications
+# get the id for that group
+sudo dscl . -read /Groups/applications
+# find a unique identifier to give the user
+sudo dscl . -list /Users UniqueID
+# create the jenkins user
+sudo dscl . -create /Users/jenkins
+sudo dscl . -create /Users/jenkins PrimaryGroupID 505
+sudo dscl . -create /Users/jenkins UniqueID 1026
+sudo dscl . -create /Users/jenkins UserShell /bin/bash
+sudo dscl . -create /Users/jenkins RealName "Jenkins"
+sudo dscl . -create /Users/jenkins NFSHomeDirectory /Users/jenkins
+sudo dscl . -passwd /Users/jenkins
+# create and set the owner of the home directory
+sudo mkdir /Users/jenkins
+sudo chown -R jenkins /Users/jenkins
+```
+
+3. Install Jenkins
+
+brew install jenkins
+
+4. Configure the Launch Item
+
+5. Test the install
+
+6. (Optional) Manage the Jenkins Process with brew services
+
+The default way to manage processes on OS X is using launchctl, but the syntax isn’t the easiest to use. For example, restarting Jenkins (something you’ll want to do each time it’s upgrade):
+
 
 
 Additional Information
