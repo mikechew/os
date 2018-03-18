@@ -116,17 +116,19 @@ Networking related files:
 It contains the details of nameserver i.e details of your DNS server which helps us connect to Internet
 
 You can specify the list of DNS/name server(s) in /etc/resolv.conf file:
-
+```
 nameserver 8.8.8.8
 nameserver 8.8.4.4
+```
 
 2) Default gateway: /etc/sysconfig/network 
-
+```
 NETWORKING=yes 
 HOSTNAME=hostname.domainname 
 GATEWAY=10.10.10.1 
 NETWORKING_IPV6=yes 
 IPV6_AUTOCONF=no
+```
 
 Route all traffic via 192.168.1.254 gateway connected via eth0 network interface. The following command will set a default gateway for both internal and external network (if any):
 ```
@@ -167,10 +169,11 @@ default 192.168.109.1 dev eth1
 10.0.0.0/8 via 10.10.29.65 dev eth1
 ```
 The below statement will send traffic to the subnet 192.168.200.0/24 via the eth1 interface. A null gateway (0.0.0.0) is used because this traffic will stay local to the LAN eth1 is connected to.
+```
 192.168.200.0/24 via 0.0.0.0 dev eth1
 
 echo '10.0.0.0/8 via 10.8.2.65' >> /etc/sysconfig/network-scripts/route-eth0
-
+```
 If you need to add it from command line:
 
 To add static route using “route add” in command line:
