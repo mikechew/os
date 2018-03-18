@@ -6,9 +6,8 @@ How to install and deploy Jenkins
 ---------------------------------
 The following are some simple steps that can help you setup Jenkins in your environment:
 
-* [Installing Jenkins on Linux](./install_jenkins_linux.md)
+* [Installing Jenkins on Linux/Mac](./install_jenkins_linux_mac.md)
 * [Installing Jenkins on Windows](./install_jenkins_windows.md)
-* [Installing Jenkins on Mac](./install_jenkins_mac.md)
 
 
 Further Information
