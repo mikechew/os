@@ -34,10 +34,11 @@ smartctl --scan
  
 6. smartctl -a /dev/sde 
 
-
+```
 ls /sys/class/scsi_host/host?/proc_name 
 for i in `ls ‐1 /sys/class/scsi_host`; do 
 echo "‐ ‐ ‐" > /sys/class/scsi_host/${i}/scan 
 done 
 
 echo '1' > /sys/class/scsi_disk/0\:0\:0\:0/device/rescan 
+```
