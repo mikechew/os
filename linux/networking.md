@@ -110,6 +110,22 @@ Assuming you want to change the MAC id for eth0:
 # ifconfig eth0 up
 ```
 
+8) To display the list of arp tables:
+```
+# arp -an
+```
+
+9) To display the speed of the network:
+```
+# ethtool eth0
+```
+
+10) To find out the gateway used for routing:
+```
+# ip route get 144.130.49.54
+```
+
+
 Networking related files:
 -------------------------
 1) DNS file: /etc/resolv.conf
