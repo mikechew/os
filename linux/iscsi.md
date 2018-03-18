@@ -5,7 +5,7 @@ Overview
 Setting up iSCSI
 ----------------
 
-To install the iSCSI initiator packages:
+On the Linux host, to install the iSCSI initiator packages:
 ```
 # yum -y install iscsi-initiator-utils
 ```
@@ -66,14 +66,25 @@ To discover the iSCSI targets on the Actifio appliance:
 iscsiadm –m discovery –t st –p ip.address.of.Actifio.iscsi.target 
 ```
 
-To discover the target name and portal value:
+To login to the iSCSI target on the Actifio appliance:
 ```
-iscsiadm -m discoverydb
+iscsiadm –m discovery -T <IQN from the above command> –t st –p ip.address.of.Actifio.iscsi.target --login
+```
+
+
+On the Actifio appliance (172.24.1.102), to discover the target name and portal value:
+```
+# iscsiadm -m discoverydb
+172.24.1.102:3260 via sendtargets
+172.24.1.151:3260 via sendtargets
+# iscsiadm -m discovery -t st -p 172.24.1.102  
+172.24.1.102:3260,1 iqn.1994-05.com.redhat:451b25aad8d6
+
 ```
 
 To remove the target name and portal value from the database:
 ```
-iscsiadm -m discoverydb -t st -o delete -p 172.24.50.121:3260
+iscsiadm -m discoverydb -t st -o delete -p 172.24.1.102:3260
 ```
 
 Note:  -t st can be substituted as --type st, and -p can be substituted as --portal
@@ -81,13 +92,31 @@ Note:  -t st can be substituted as --type st, and -p can be substituted as --por
 To log into target(s):
 ```
 iscsiadm -m node -l
-iscsiadm -m node -T iqn.1986-03.com.ibm -p 172.24.50.41 -l
+# iscsiadm -m node -T iqn.1994-05.com.redhat:451b25aad8d6 - 172.24.1.102 --login
+# iscsiadm -m session 
+tcp: [2] 172.24.1.102:3260,1 iqn.1994-05.com.redhat:451b25aad8d6
 ```
 
 To log out of iSCSI sessions:
 ```
 iscsiadm -m session -u
 iscsiadm -m node -T iqn.1986-03.com.ibm -p 172.24.50.41 -u
+# iscsiadm -m node -u
+Logging out of session [sid: 2, target: iqn.1994-05.com.redhat:451b25aad8d6, portal: 172.24.1.102,3260]
+Logout of [sid: 2, target: iqn.1994-05.com.redhat:451b25aad8d6, portal: 172.24.1.102,3260] successful.
+# iscsiadm -m node   
+172.24.1.102:3260,1 iqn.1994-05.com.redhat:451b25aad8d6
+# iscsiadm -m session
+iscsiadm: No active sessions.
+```
+
+```
+# iscsiadm -m node -l
+Logging in to [iface: default, target: iqn.1994-05.com.redhat:451b25aad8d6, portal: 172.24.1.102,3260] (multiple)
+Login to [iface: default, target: iqn.1994-05.com.redhat:451b25aad8d6, portal: 172.24.1.102,3260] successful.
+# iscsiadm -m session
+tcp: [3] 172.24.1.102:3260,1 iqn.1994-05.com.redhat:451b25aad8d6 
+```
 
 List the nodes and discovery records:
 ```
