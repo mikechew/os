@@ -35,9 +35,9 @@ Confirm the new time-zone is in place:
 3) To display the routing table:
 
 Use the following to display the routing table:
-* a) route -n
-* b) ip route list
-* c) netstat –rn  { equivalent to cat /proc/net/route }
+1. route -n
+2. ip route list
+3. netstat –rn  { equivalent to cat /proc/net/route }
 
 4) To set date and time:
 
@@ -98,6 +98,14 @@ You can check the system log /var/log/messages to make sure the network interfac
 To test pinging from a specific interface:
 ```
 # ping  58.162.139.65 -I eth1
+```
+
+7) To change the MAC address:
+Assuming you want to change the MAC id for eth0:
+```
+# ifconfig eth0 down  
+# ifconfig eth0 hw ether 00:00:00:00:00:00      (choose your mac here)
+# ifconfig eth0 up
 ```
 
 Networking related files:
