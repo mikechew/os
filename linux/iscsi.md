@@ -5,7 +5,7 @@ Overview
 Setting up iSCSI
 ----------------
 
-On the Linux host, to install the iSCSI initiator packages:
+On the Linux host, to install the iSCSI initiator packages (aka client):
 ```
 # yum -y install iscsi-initiator-utils
 ```
@@ -33,7 +33,7 @@ If iSCSI daemon is not running, you might need to try start it up with
 # cat /var/log/messages | grep -i iscsi
 ```
 
-To find out the IQN on the host:
+To find out the IQN name for the initiator on the host:
 ```
 # cat /etc/iscsi/initiatorname.iscsi
 InitiatorName=iqn.1994-05.com.redhat:38de7b36a09c
@@ -66,6 +66,11 @@ Lists the entries and remove them from the iSCSI database:
 		* (-t st can be substituted as --type st, and -p can be substituted as --portal)
 ```
 
+To list the node records: 
+```
+iscsiadm --mode node 
+```
+
 To scan the iscsi bus for LUNs:
 ```
 # iscsiadm -m node --rescan
@@ -77,7 +82,7 @@ To list the current sessions logged in:
 iscsiadm -m session
 ```
 
-To discover the iSCSI targets on the Actifio appliance:
+To discover the iSCSI targets (aka servers) on the Actifio appliance:
 ```
 iscsiadm –m discovery –t st –p ip.address.of.Actifio.iscsi.target 
 # iscsiadm -m discovery -t st -p 172.17.183.212
@@ -88,11 +93,15 @@ iscsiadm –m discovery –t st –p ip.address.of.Actifio.iscsi.target
 10.82.18.52:3260,1 iqn.1994-05.com.redhat:38de7b36a09c
 ```
 
-To login to the iSCSI target on the Actifio appliance:
+From the host, to login to the iSCSI target on the Actifio appliance:
 ```
 iscsiadm –m discovery -T <IQN from the above command> –t st –p ip.address.of.Actifio.iscsi.target --login
 ```
 
+To verify the session is established:
+```
+iscsiadm –m session --op show
+```
 
 On the Actifio appliance (172.24.1.102), to discover the target name and portal value:
 ```
@@ -109,9 +118,9 @@ To discover the loop back iscsi target. If the local loop back is listed then IS
 # iscsiadm –m discovery –t st –p <ip address of sky> 
 ```
 
-To remove the target name and portal value from the database:
+To remove the target name and portal value from the iSCSI discovery database:
 ```
-iscsiadm -m discoverydb -t st -o delete -p 172.24.1.102:3260
+iscsiadm -m discoverydb -t st -p 172.24.1.102:3260 -o delete 
 ```
 
 Note:  -t st can be substituted as --type st, and -p can be substituted as --portal
@@ -137,9 +146,12 @@ Logout of [sid: 2, target: iqn.1994-05.com.redhat:451b25aad8d6, portal: 172.24.1
 iscsiadm: No active sessions.
 ```
 
-To log out of iSCSI sessions and delete the cache:
+To log out of iSCSI sessions and delete the cache (remove the node), prevent the session from re-establishing:
 ```
 # iscsiadm -m node -T iqn.1986-03.com.ibm -p 172.24.50.41 -o delete
+
+# ls /var/lib/iscsi/nodes/<iqn>
+If the IQN exists, it should be deleted. Remove any entries that are stale from /var/lib/iscsi/send_targets/, /dev/disk/by-scsibus/ and /dev/disk/by-scsid/ directory as well.
 ```
 
 ```
@@ -150,18 +162,18 @@ Login to [iface: default, target: iqn.1994-05.com.redhat:451b25aad8d6, portal: 1
 tcp: [3] 172.24.1.102:3260,1 iqn.1994-05.com.redhat:451b25aad8d6 
 ```
 
-List the nodes and discovery records:
+List the nodes and discovery records/targets database (files are located in /var/lib/iscsi):
 ```
 ls /var/lib/iscsi
-ls /var/lib/iscsi/send_targets
+/var/lib/iscsi/nodes/          -- This directory contains the nodes with their targets.
+/var/lib/iscsi/send_targets    -- This directory contains the portals.
 ```
-
 
 ```
 ls /dev/disk/
-- by-id → based upon the serial number of the hardware devices
-- by-label → Whatever name was set manually for this disk
-- by-path → Maps from the path identifier to the current /dev/sd name.
-- by-uuid → Universal Unique Identifier: a uniquely created string to identify the disk 
+- by-id         → based upon the serial number of the hardware devices
+- by-label      → Whatever name was set manually for this disk
+- by-path       → Maps from the path identifier to the current /dev/sd name.
+- by-uuid       → Universal Unique Identifier: a uniquely created string to identify the disk 
 
 ```
