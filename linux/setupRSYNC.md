@@ -1,6 +1,8 @@
 ## Setup Tasks:
 
-Following is the instructions on how to setup NFS client and server on the Linux host:
+rsync is a utility that can be used to synchronise the files and directories from one location to another in an effective manner.
+
+Following is the instructions on how to setup rsync software on the Linux host:
 
 On the server:
 ```
@@ -31,3 +33,7 @@ root@10.65.5.202's password:
 building file list ... done
 created directory /tmp/p
 ```
+
+# Syntax:
+rsync options source destination
+
