@@ -38,4 +38,33 @@ mount 10.65.5.202:/data/nfs /tmp/nfs
 umount /tmp/nfs
 ```
 
+### Additional Information
+```
+chkconfig nfs on
 
+service nfs start
+service rpcbind start
+
+service rpcbind status
+service nfs status
+
+cat /etc/sysconfig/nfs
+cat /etc/idmapd.conf
+
+
+
+mount
+
+# vi /etc/exports
+
+Add the entry as shown below.
+/var/unixmen_share/     192.168.1.0/24(rw,sync,no_root_squash,no_all_squash)
+
+where,
+/var/unixmen_share  – shared directory
+192.168.1.0/24      – IP address range of clients
+rw                  – Writable permission to shared folder
+sync                – Synchronize shared directory
+no_root_squash      – Enable root privilege
+no_all_squash       – Enable user’s authority
+```
