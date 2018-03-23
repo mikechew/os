@@ -56,3 +56,21 @@ rm -fr my-project/
 git clone git@10.65.5.202:/hub/my-project.git
  ll /tmp/my-project/
 ```
+
+### Push source code from remote to the server
+On the Git remote server:
+```
+git init --bare /home/git/hub/c-code.git
+```
+
+On the local server:
+```
+mkdir c-code
+git init
+vi hello.c
+git add .
+git commit -m 'initial commit'
+git remote add origin ssh://git@10.65.5.202:22/home/git/hub/c-code.git
+git push origin master
+git remote -v
+```
