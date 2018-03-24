@@ -32,8 +32,22 @@ total 0
 root@10.65.5.202's password: 
 building file list ... done
 created directory /tmp/p
+
+# rsync -avz /tmp/foo/ root@host2:/tmp/bar 
+# rsync -avh -e "ssh -p 22" root@10.10.10.1:/tmp/bar/*.csv . 
+# rsync -avh -e "ssh -p 26 -A -i /Users/john/.ssh/id_rsa" list.sh 10.10.10.1:/tmp/bar
 ```
 
 # Syntax:
 rsync options source destination
-
+```
+ -r – recursive for moving directories. 
+ -z – compress file data. 
+ -v – verbose (try -vv for more detailed information) 
+ -e "ssh options" : specify the ssh as remote shell 
+ -a – archive mode, combo of -rlptgoD, meaning: "preserves" symbolic links, special and 
+ 	device files, modification times, group, owner, and permissions. 
+ -P – combo of --progress and --partial, meaning it shows a progress bar and it’s 
+ 	possible to resume interrupted transfers. 
+ --delete – delete files that don’t exists in source (sender) system, good when syncing.
+ ```
