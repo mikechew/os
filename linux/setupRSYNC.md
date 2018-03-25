@@ -41,19 +41,40 @@ created directory /tmp/p
 # Syntax:
 rsync options source destination
 ```
- -r – recursive for moving directories. 
- -z – compress file data. 
- -v – verbose (try -vv for more detailed information) 
- -e "ssh options" : specify the ssh as remote shell 
- -a – archive mode, combo of -rlptgoD, meaning: "preserves" symbolic links, special and 
- 	device files, modification times, group, owner, and permissions. 
- -P – combo of --progress and --partial, meaning it shows a progress bar and it’s 
- 	possible to resume interrupted transfers. 
- --delete – delete files that don’t exists in source (sender) system, good when syncing.
+    -v - Verbose output (try -vv for more detailed information) 
+    -z - Compress files
+    -c - Compare files based on checksum instead of mod-time (create/modified timestamp) and size
+    -r - Recursive for moving directories.
+    -S - Handle sparse files efficiently
+    Symlinks:
+        -l - Copy symlinks as symlinks
+        -L - Transform symlink into referent file/dir (copy the actual file)
+    -p - Preserve permissions
+	   -t - Preserve modification times
+	   -g - Preserve group    
+    -h - Output numbers in a human-readable format
+    -o - Preserve owner (User needs to have permission to change owner)
+    --exclude="" - Files to exclude
+        e.g. Exclude the .git directory: --exclude=".git"
+    -e "ssh options" : specify the ssh as remote shell 
+    -a – archive mode, combo of -rlptgoD, meaning: "preserves" symbolic links, special and 
+ 	      device files, modification times, group, owner, and permissions. 
+    -P – combo of --progress and --partial, meaning it shows a progress bar and it’s 
+ 	      possible to resume interrupted transfers. 
+    --delete – delete files that don’t exists in source (sender) system, good when syncing.
  ```
 
 # Examples:
  ```
+# Copy using the archive option and print some stats
+# rsync -a --stats /source/dir/path username@hostname:/destination/dir/path
+
+# Copy a file
+# rsync /path/to/source/file.ext username@hostname.com:/path/to/destination/file.ext
+
+# Copy a directory:
+# rsync -r /path/to/source/dir username@hostname.com:/path/to/destination/dir
+
 # If you want to copy only php files from one server to another, you can use this command.
 # rsync ‐av ‐‐include='*/' ‐‐include='*.php' ‐‐exclude='*' source-server destination-server
 
