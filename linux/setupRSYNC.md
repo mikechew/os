@@ -51,3 +51,12 @@ rsync options source destination
  	possible to resume interrupted transfers. 
  --delete – delete files that don’t exists in source (sender) system, good when syncing.
  ```
+
+# Examples:
+ ```
+# If you want to copy only php files from one server to another, you can use this command.
+# rsync ‐av ‐‐include='*/' ‐‐include='*.php' ‐‐exclude='*' source-server destination-server
+
+# Now if you want to copy only css and js files, use this command:
+# rsync ‐av ‐‐include='*/' ‐‐include='*.js' ‐‐include'*.css' ‐‐exclude='*' source-server destination-server
+ ```
