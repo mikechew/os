@@ -33,16 +33,21 @@ chmod 600 ~/.ssh/id_rsa
 chmod 644 ~/.ssh/id_rsa.pub  
 chmod 0644 ~/.ssh/authorized_keys
 
- # vi /etc/ssh/sshd_config 
- # To disable root logins, edit or add as follows: 
- PermitRootLogin no 
- Restrict login to user tom and jerry only over ssh: 
- AllowUsers tom jerry 
- Change ssh port i.e. run it on a non-standard port like 1235 
- Port 1235 
+# Edit SSH Server Configuration File (/etc/ssh/sshd_config)
+# vi /etc/ssh/sshd_config 
+# To disable root logins, edit or add as follows: 
+PermitRootLogin no 
+# Uncomment the following to enable root login:
+# PermitRootLogin yes
+Restrict login to user tom and jerry only over ssh: 
+AllowUsers tom jerry 
+Change ssh port i.e. run it on a non-standard port like 1235 
+Port 1235 
+# To limit SSH server to listen on specific address, replace 0.0.0.0 with the IP address
+#ListenAddress 0.0.0.0
  
- Save and close the file. Restart sshd: 
- # service sshd restart
+Save and close the file. Restart sshd: 
+# service sshd restart
 
 # To test connecting from the client machine:
 #
