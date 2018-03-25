@@ -1,6 +1,6 @@
 ## Setup Tasks:
 
-rsync is a utility that can be used to synchronise the files and directories from one location to another in an effective manner.
+rsync (stands for remote sync) is a utility that can be used to synchronise the files and directories from one location to another in an effective manner.
 
 Following is the instructions on how to setup rsync software on the Linux host:
 
@@ -59,4 +59,40 @@ rsync options source destination
 
 # Now if you want to copy only css and js files, use this command:
 # rsync ‐av ‐‐include='*/' ‐‐include='*.js' ‐‐include'*.css' ‐‐exclude='*' source-server destination-server
- ```
+
+# Exclude a single file
+# rsync ‐avz ‐‐exclude 'file' source/ destination/
+
+# Exclude a type of files
+# rsync ‐avz ‐‐exclude '*.typ' source/ destination/
+
+# Exclude a folder
+# rsync ‐avz ‐‐exclude 'folder' source/ destination/
+
+# Exclude multiple files or folders
+# rsync ‐avz ‐‐exclude '*.file_type' ‐‐exclude 'folder' source/ destination/
+
+# backup.tar needs to be copied or synced to /tmp/backups/ folder
+# rsync -zvh backup.tar /tmp/backups/
+
+# Displays the progress while transferring the data from one machine to a different machine using the ‘–progress’ option.
+# rsync -avzhe ssh --progress /home/rpmpkgs root@192.168.0.100:/root/rpmpkgs
+
+# Use ‘–delete‘ option to delete files that are not there in source directory
+# rsync -avz --delete root@192.168.0.100:/var/lib/rpm/ .
+
+# Use the Max file size to be transferred or sync using the “–max-size” option.
+# rsync -avzhe ssh --max-size='200k' /var/lib/rpm/ root@192.168.0.100:/root/tmprpm
+
+# To automatically delete source files after successful transfer
+# rsync --remove-source-files -zvh backup.tar /tmp/backups/
+
+# To perform a dry run of the command and shows the output of the command using the ‘–dry-run‘ option
+# rsync --dry-run --remove-source-files -zvh backup.tar /tmp/backups/
+
+#  To set the bandwidth limit while transferring data from one machine to another machine using the ‘–bwlimit‘ option. 
+# rsync --bwlimit=100 -avzhe ssh  /var/lib/rpm/  root@192.168.0.100:/root/tmprpm/
+
+# By default rsync syncs changed blocks and bytes only, if you want explicitly want to sync whole file using the ‘-W‘ option
+# rsync -zvhW backup.tar /tmp/backups/backup.tar
+```
