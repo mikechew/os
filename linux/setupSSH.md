@@ -16,7 +16,9 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@server02
 
 # If you are running from the client machine, you will can run the following:
 ssh root@server02 'mkdir -p /root/.ssh'
-scp /root/.ssh/id_rsa.pub root@server02:/root/.ssh/authorized_keys
+
+# scp /root/.ssh/id_rsa.pub root@server02:/root/.ssh/authorized_keys
+# /root/.ssh/id_rsa.pub is the source
 cat /root/.ssh/id_rsa.pub | ssh root@server02 'cat >> .ssh/authorized_keys'
 
 ssh root@server02 'chmod 700 /root/.ssh'
