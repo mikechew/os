@@ -44,6 +44,7 @@ hostname
 swapon -s
 ping www.google.com
 yum -y install xorg-x11-xauth xorg-x11-apps xorg-x11-fonts-* xorg-x11-utils
+xclock
 
 # cat /etc/sysconfig/ntpd
 # Drop root to id 'ntp:ntp' by default.
@@ -71,16 +72,16 @@ ping –c 2 www.google.com
 
 # Create Oracle users and directory
 ```
-useradd oracle
+useradd oracle -u 550
 
 # Set the Oracle userID password to password
 echo -e "password\npassword" | passwd oracle
-/usr/sbin/groupadd oinstall
-/usr/sbin/groupadd dba
-/usr/sbin/groupadd oper
-/usr/sbin/groupadd asmdba
-/usr/sbin/groupadd asmadmin
-/usr/sbin/groupadd asmoper
+/usr/sbin/groupadd -g 500 oinstall
+/usr/sbin/groupadd -g 501 dba
+/usr/sbin/groupadd -g 502 oper
+/usr/sbin/groupadd -g 503 asmdba
+/usr/sbin/groupadd -g 504 asmadmin
+/usr/sbin/groupadd -g 505 asmoper
 
 /usr/sbin/usermod -g oinstall -G dba,asmdba,asmadmin oracle
 
