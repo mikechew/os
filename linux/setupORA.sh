@@ -189,4 +189,32 @@ oracle.install.db.DBA_GROUP=dba \
 oracle.install.db.OPER_GROUP=dba \
 DECLINE_SECURITY_UPDATES=true
 
+
+
+cp <unzip_location>/database/response/db_install.rsp 
+
+Response File:
+
+oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v11_2_0
+oracle.install.option=INSTALL_DB_SWONLY
+ORACLE_HOSTNAME=server.domain
+UNIX_GROUP_NAME=oinstall
+kINVENTORY_LOCATION=/home/oracle/11202/inventory
+SELECTED_LANGUAGES=en
+ORACLE_HOME=/u01/oracle/products/11202
+ORACLE_BASE=/u01/oracle/products
+oracle.install.db.InstallEdition=EE
+oracle.install.db.isCustomInstall=true
+# This variable is considered only if 'IsCustomInstall' is set to true.
+oracle.install.db.customComponents=oracle.server:11.2.0.1.0,oracle.sysman.ccr:10.2.7.0.0,oracle
+.xdk:11.2.0.1.0,oracle.rdbms.oci:11.2.0.1.0,oracle.network:11.2.0.1.0,oracle.network.listener:1
+1.2.0.1.0,oracle.rdbms:11.2.0.1.0,oracle.options:11.2.0.1.0,oracle.rdbms.partitioning:11.2.0.1.
+0,oracle.oraolap:11.2.0.1.0,oracle.rdbms.dm:11.2.0.1.0,oracle.rdbms.dv:11.2.0.1.0,orcle.rdbms.l
+bac:11.2.0.1.0,oracle.rdbms.rat:11.2.0.1.0
+oracle.install.db.DBA_GROUP=oinstall
+DECLINE_SECURITY_UPDATES=true
+
+
+./runInstaller -silent -ignorePrereq -responseFile <complete_path>/db_install.rsp
+
 ```
