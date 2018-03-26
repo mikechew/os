@@ -46,28 +46,35 @@ ping www.google.com
 yum -y install xorg-x11-xauth xorg-x11-apps xorg-x11-fonts-* xorg-x11-utils
 xclock
 
-# cat /etc/sysconfig/ntpd
-# Drop root to id 'ntp:ntp' by default.
-OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid -g"
-SYNC_HWCLOCK=no
 
+yum -y install ntp
+chkconfig ntpd on
+                
 /etc/init.d/ntpd start
 /etc/init.d/ntpd stop
 /etc/init.d/ntpd status
 
 cat /etc/sysconfig/ntpd
+# Drop root to id 'ntp:ntp' by default.
+SYNC_HWCLOCK=no
 
 vi /etc/sysconfig/ntpd
-OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid -g"
-service ntpd restart
-service ntpd status
-service ntpd restart
+echo "server 0.centos.pool.ntp.org iburst" >> /etc/ntp.conf 
+echo "server 1.centos.pool.ntp.org iburst" >> /etc/ntp.conf 
+echo "server ntp.server.com" >> /etc/ntp.conf 
+echo "server 10.10.10.1" >> /etc/ntp.conf    
+echo 'OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid -g"' >> /etc/sysconfig/ntpd  
+                
 chkconfig ntpd off
 service ntpd restart
 iptables -A OUTPUT -p udp --dport 123 -j ACCEPT
-ntpq -pn
+
+/usr/sbin/ntpq –pn
 ping –c 2 www.google.com
 
+service ntpd restart
+service ntpd status
+service ntpd restart
 ```
 
 # Create Oracle users and directory
