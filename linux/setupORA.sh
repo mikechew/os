@@ -169,4 +169,24 @@ chmod 600 /home/oracle/.Xauthority
 su - oracle
 cd /software/grid
 ./runInstaller
+
+Unix:
+$ cd /11gR2/database
+$ ./runInstaller silent
+debug
+force
+\
+FROM_LOCATION=/11gR2/database/stage/products.xml \
+oracle.install.option=INSTALL_DB_SWONLY \
+UNIX_GROUP_NAME=oinstall \
+INVENTORY_LOCATION=/u01/app/oracle/oraInventory \
+ORACLE_HOME=/u01/app/oracle/product/11201/db_1 \
+ORACLE_HOME_NAME="OraDb11g_Home1" \
+ORACLE_BASE=/u01/app/oracle \
+oracle.install.db.InstallEdition=EE \
+oracle.install.db.isCustomInstall=false \
+oracle.install.db.DBA_GROUP=dba \
+oracle.install.db.OPER_GROUP=dba \
+DECLINE_SECURITY_UPDATES=true
+
 ```
