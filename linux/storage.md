@@ -42,3 +42,33 @@ done
 
 echo '1' > /sys/class/scsi_disk/0\:0\:0\:0/device/rescan 
 ```
+7. Automating disk partitioning
+
+```
+(
+echo o # Create a new empty DOS partition table
+echo n # Add a new partition
+echo p # Primary partition
+echo 1 # Partition number
+echo   # First sector (Accept default: 1)
+echo   # Last sector (Accept default: varies)
+echo w # Write changes
+) | sudo fdisk
+
+echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/sda
+
+
+dev='/dev/sdb'
+sudo umount "$dev"
+printf "o\nn\np\n1\n\n\nw\n" | sudo fdisk "$dev"
+sudo mkfs.ext4 "${dev
+
+
+fdisk -u -p /dev/whatever <<EOF
+n
+p
+1
+
+w
+EOF
+```
