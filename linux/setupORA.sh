@@ -33,9 +33,10 @@ reboot
 # Prepare OS for installation
 
 ```
+yum -y install wget
 cd /etc/yum.repos.d
 wget https://public-yum.oracle.com/public-yum-ol6.repo --no-check-certificate
-ping www.google.com
+ping -c 2 www.google.com
 wget https://public-yum.oracle.com/public-yum-ol6.repo --no-check-certificate
 wget https://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6 -O /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle --no-check-certificate
 yum -y install oracle-rdbms-server-11gR2-preinstall
@@ -116,20 +117,21 @@ cat .bash_profile
 
 # Mount the Oracle software and modify the cvu_config file
 ```
-yum -y install cifs-utils
+yum -y install cifs-utils unzip
 mkdir /software
 useradd -u 5000 svc_library_core
 groupadd -g 6000 share_library_core
 usermod -G share_library_core -a root
 mkdir /lib_core
-mount.cifs //10.61.5.162/public /lib_core -o user=administrator,uid=5000,gid=600
+mount.cifs //10.65.5.191/temp/iso /lib_core -o user=actifio,uid=5000,gid=600
 cd /software
-unzip /lib_core/ORACLE/p13390677_112040_Linux-x86-64_1of7.zip
-unzip /lib_core/ORACLE/p13390677_112040_Linux-x86-64_2of7.zip
-unzip /lib_core/ORACLE/p13390677_112040_Linux-x86-64_3of7.zip
+unzip /lib_core/p13390677_112040_Linux-x86-64_1of7.zip
+unzip /lib_core/p13390677_112040_Linux-x86-64_2of7.zip
+unzip /lib_core/p13390677_112040_Linux-x86-64_3of7.zip
 umount /lib_core
 sed -i -e 's/^CV_ASSUME_DISTID=OEL4/CV_ASSUME_DISTID=OEL6/' /software/grid/stage/cvu/cv/admin/cvu_config
 sed -i -e 's/^CV_ASSUME_DISTID=OEL4/CV_ASSUME_DISTID=OEL6/' /software/database/stage/cvu/cv/admin/cvu_config
+cd
 ```
 
 # Install the ASM driver and add disks
@@ -140,8 +142,8 @@ cd /lib_core
 curl -O http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.12-1.el6.x86_64.rpm
 rpm -ivh oracleasmlib-2.0.12-1.el6.x86_64.rpm
 
-
-echo -e "oracle\noinstall\ny\ny\n" | oracleasm configure -i
+# /etc/init.d/oracleasm or /usr/sbin/oracleasm
+echo -e "oracle\noinstall\ny\ny\n" | /etc/init.d/oracleasm configure -i
 rpm -qa | grep oracleasm
 
 /etc/init.d/oracleasm start
