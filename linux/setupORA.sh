@@ -175,6 +175,10 @@ cp .Xauthority /home/oracle
 chown oracle:oinstall /home/oracle/.Xauthority
 chmod 600 /home/oracle/.Xauthority
 su - oracle
+cd 
+./runInstaller -silent -force -responseFile /software/grid/response/grid.rsp
+./runInstaller -silent -force -responseFile /software/grid/database/db_install.rsp
+
 cd /software/grid
 ./runInstaller
 
