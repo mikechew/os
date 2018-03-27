@@ -99,21 +99,24 @@ ls -ld /u01/app
 su - oracle
 
 Install grid
-# Grid
-export ORACLE_BASE=/u01/app/oracle/
-export ORACLE_HOME=/u01/app/11.2.0/grid
-# Oracle software
-# export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1
-export ORACLE_HOSTNAME=asm3-ora.mdemo.net
-export TMP=/tmp
-export TMPDIR=/tmp
-unset ORACLE_SID
-export PATH=$ORACLE_HOME/bin:$PATH
 
+cat .bash_profile
+echo "# Grid" >> .bash_profile
+echo "export ORACLE_BASE=/u01/app/oracle/" >> .bash_profile
+echo "export ORACLE_HOME=/u01/app/11.2.0/grid" >> .bash_profile
+echo "# Oracle software" >> .bash_profile
+echo "# export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1" >> .bash_profile
+echo "export ORACLE_HOSTNAME=melnaborcl" >> .bash_profile
+echo "export TMP=/tmp" >> .bash_profile
+echo "export TMPDIR=/tmp" >> .bash_profile
+echo "unset ORACLE_SID" >> .bash_profile
+echo "export PATH=\$ORACLE_HOME/bin:\$PATH" >> .bash_profile
+cat .bash_profile
 ```
 
 # Mount the Oracle software and modify the cvu_config file
 ```
+yum -y install cifs-utils
 mkdir /software
 useradd -u 5000 svc_library_core
 groupadd -g 6000 share_library_core
