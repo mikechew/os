@@ -143,8 +143,10 @@ curl -O http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.12-1.el6
 rpm -ivh oracleasmlib-2.0.12-1.el6.x86_64.rpm
 
 # /etc/init.d/oracleasm or /usr/sbin/oracleasm
+oracleasm status
 echo -e "oracle\noinstall\ny\ny\n" | /etc/init.d/oracleasm configure -i
 rpm -qa | grep oracleasm
+oracleasm status
 
 /etc/init.d/oracleasm start
 oracleasm listdisks
