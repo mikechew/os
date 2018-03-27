@@ -177,61 +177,136 @@ chmod 600 /home/oracle/.Xauthority
 su - oracle
 cd 
 
-sed -e '/^$/d' -e '/^ $/d' -e '/^#/d' grid.rsp
-# remove blank lines and #
-sed -e '/^$/d' -e '/^ $/d' -e '/^#/d' grid.rsp | perl -ne 'print  nless /^$/' 
+cp /software/grid/response/grid_install.rsp /home/oracle/grid.rsp
+cp /software/database/response/db_install.rsp /home/oracle/db_install.rsp
 
-./runInstaller -silent -force -responseFile /software/grid/response/grid.rsp
-./runInstaller -silent -force -responseFile /software/grid/database/db_install.rsp
+sed -e '/^$/d' -e '/^ $/d' -e '/^#/d' /home/oracle/grid.rsp > /home/oracle/inst-grid.rsp
+# remove blank lines and #
+sed -e '/^$/d' -e '/^ $/d' -e '/^#/d' grid.rsp | perl -ne 'print unless /^$/' 
+
+sed -e '/^$/d' -e '/^ $/d' -e '/^#/d' /home/oracle/db_install.rsp > /home/oracle/inst-db.rsp
 
 cd /software/grid
-./runInstaller
+nohup ./runInstaller -silent -force -responseFile /home/oracle/inst-grid.rsp > /home/oracle/inst-grid.log 2> /home/oracle/inst-grid.err &
 
-Unix:
-$ cd /11gR2/database
-$ ./runInstaller silent
-debug
-force
-\
-FROM_LOCATION=/11gR2/database/stage/products.xml \
-oracle.install.option=INSTALL_DB_SWONLY \
-UNIX_GROUP_NAME=oinstall \
-INVENTORY_LOCATION=/u01/app/oracle/oraInventory \
-ORACLE_HOME=/u01/app/oracle/product/11201/db_1 \
-ORACLE_HOME_NAME="OraDb11g_Home1" \
-ORACLE_BASE=/u01/app/oracle \
-oracle.install.db.InstallEdition=EE \
-oracle.install.db.isCustomInstall=false \
-oracle.install.db.DBA_GROUP=dba \
-oracle.install.db.OPER_GROUP=dba \
-DECLINE_SECURITY_UPDATES=true
+cat /home/oracle/inst-grid.rsp
+#
+oracle.install.responseFileVersion=/oracle/install/rspfmt_crsinstall_response_schema_v11_2_0
+ORACLE_HOSTNAME=melnaborcl
+INVENTORY_LOCATION=/u01/app/oraInventory
+SELECTED_LANGUAGES=en
+oracle.install.option=HA_CONFIG
+ORACLE_BASE=/u01/app/oracle
+ORACLE_HOME=/u01/app/oracle/11.2.0/grid
+oracle.install.asm.OSDBA=asmdba
+oracle.install.asm.OSOPER=asmoper
+oracle.install.asm.OSASM=asmadmin
+oracle.install.crs.config.gpnp.scanName=melnabo-cluster
+oracle.install.crs.config.gpnp.scanPort=1521
+oracle.install.crs.config.clusterName=melnabo-cluster
+oracle.install.crs.config.gpnp.configureGNS=false
+oracle.install.crs.config.gpnp.gnsSubDomain=
+oracle.install.crs.config.gpnp.gnsVIPAddress=
+oracle.install.crs.config.autoConfigureClusterNodeVIP=false
+oracle.install.crs.config.clusterNodes=melnaborcl:melnaborcl-vip
+oracle.install.crs.config.networkInterfaceList=eth0:10.65.5.0:1
+oracle.install.crs.config.storageOption=
+oracle.install.crs.config.sharedFileSystemStorage.diskDriveMapping=
+oracle.install.crs.config.sharedFileSystemStorage.votingDiskLocations=
+oracle.install.crs.config.sharedFileSystemStorage.votingDiskRedundancy=NORMAL
+oracle.install.crs.config.sharedFileSystemStorage.ocrLocations=
+oracle.install.crs.config.sharedFileSystemStorage.ocrRedundancy=NORMAL
+               	
+oracle.install.crs.config.useIPMI=false
+oracle.install.crs.config.ipmi.bmcUsername=
+oracle.install.crs.config.ipmi.bmcPassword=
+oracle.install.asm.SYSASMPassword=Passw0rd
+oracle.install.asm.diskGroup.name=DATA
+oracle.install.asm.diskGroup.redundancy=EXTERNAL
+oracle.install.asm.diskGroup.AUSize=1
+oracle.install.asm.diskGroup.disks=ORCL:DATA1,ORCL:DATA2
+oracle.install.asm.diskGroup.diskDiscoveryString=
+oracle.install.asm.monitorPassword=Passw0rd
+oracle.install.crs.upgrade.clusterNodes=
+oracle.install.asm.upgradeASM=false
+oracle.installer.autoupdates.option=SKIP_UPDATES
+oracle.installer.autoupdates.downloadUpdatesLoc=
+AUTOUPDATES_MYORACLESUPPORT_USERNAME=
+AUTOUPDATES_MYORACLESUPPORT_PASSWORD=
+PROXY_HOST=
+PROXY_PORT=0
+PROXY_USER=
+PROXY_PWD=
+PROXY_REALM=
 
 
+# On the server, run as root:
+/u01/app/oraInventory/orainstRoot.sh
+/u01/app/oracle/11.2.0/grid/root.sh
 
-cp <unzip_location>/database/response/db_install.rsp 
+# Run asmca from GUI to create the ASM diskgroup and starts the ASM instance
+asmca
 
-Response File:
-
+# List the install the response file for the DB installer
 oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v11_2_0
 oracle.install.option=INSTALL_DB_SWONLY
-ORACLE_HOSTNAME=server.domain
+ORACLE_HOSTNAME=melnaborcl
 UNIX_GROUP_NAME=oinstall
-kINVENTORY_LOCATION=/home/oracle/11202/inventory
+INVENTORY_LOCATION=/u01/app/oraInventory
 SELECTED_LANGUAGES=en
-ORACLE_HOME=/u01/oracle/products/11202
-ORACLE_BASE=/u01/oracle/products
+ORACLE_HOME=/u01/app/oracle/11.2.0/dbhome_1
+ORACLE_BASE=/u01/app/oracle
 oracle.install.db.InstallEdition=EE
-oracle.install.db.isCustomInstall=true
-# This variable is considered only if 'IsCustomInstall' is set to true.
-oracle.install.db.customComponents=oracle.server:11.2.0.1.0,oracle.sysman.ccr:10.2.7.0.0,oracle
-.xdk:11.2.0.1.0,oracle.rdbms.oci:11.2.0.1.0,oracle.network:11.2.0.1.0,oracle.network.listener:1
-1.2.0.1.0,oracle.rdbms:11.2.0.1.0,oracle.options:11.2.0.1.0,oracle.rdbms.partitioning:11.2.0.1.
-0,oracle.oraolap:11.2.0.1.0,oracle.rdbms.dm:11.2.0.1.0,oracle.rdbms.dv:11.2.0.1.0,orcle.rdbms.l
-bac:11.2.0.1.0,oracle.rdbms.rat:11.2.0.1.0
-oracle.install.db.DBA_GROUP=oinstall
+oracle.install.db.EEOptionsSelection=false
+oracle.install.db.optionalComponents=
+oracle.install.db.DBA_GROUP=dba
+oracle.install.db.OPER_GROUP=oper
+oracle.install.db.CLUSTER_NODES=
+oracle.install.db.isRACOneInstall=false
+oracle.install.db.racOneServiceName=
+oracle.install.db.config.starterdb.type=GENERAL_PURPOSE
+oracle.install.db.config.starterdb.globalDBName=
+oracle.install.db.config.starterdb.SID=
+oracle.install.db.config.starterdb.characterSet=
+oracle.install.db.config.starterdb.memoryOption=false
+oracle.install.db.config.starterdb.memoryLimit=
+oracle.install.db.config.starterdb.installExampleSchemas=false
+oracle.install.db.config.starterdb.enableSecuritySettings=true
+oracle.install.db.config.starterdb.password.ALL=
+oracle.install.db.config.starterdb.password.SYS=
+oracle.install.db.config.starterdb.password.SYSTEM=
+oracle.install.db.config.starterdb.password.SYSMAN=
+oracle.install.db.config.starterdb.password.DBSNMP=
+oracle.install.db.config.starterdb.control=DB_CONTROL
+oracle.install.db.config.starterdb.gridcontrol.gridControlServiceURL=
+oracle.install.db.config.starterdb.automatedBackup.enable=false
+oracle.install.db.config.starterdb.automatedBackup.osuid=
+oracle.install.db.config.starterdb.automatedBackup.ospwd=
+oracle.install.db.config.starterdb.storageType=
+oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=
+oracle.install.db.config.starterdb.fileSystemStorage.recoveryLocation=
+oracle.install.db.config.asm.diskGroup=
+oracle.install.db.config.asm.ASMSNMPPassword=
+MYORACLESUPPORT_USERNAME=
+MYORACLESUPPORT_PASSWORD=
+SECURITY_UPDATES_VIA_MYORACLESUPPORT=false
 DECLINE_SECURITY_UPDATES=true
+PROXY_HOST=
+PROXY_PORT=
+PROXY_USER=
+PROXY_PWD=
+PROXY_REALM=
+COLLECTOR_SUPPORTHUB_URL=
+oracle.installer.autoupdates.option=SKIP_UPDATES
+oracle.installer.autoupdates.downloadUpdatesLoc=
+AUTOUPDATES_MYORACLESUPPORT_USERNAME=
+AUTOUPDATES_MYORACLESUPPORT_PASSWORD=
 
+# change the ORACLE_HOME to point from grid to the database directory
+cd /software/database
+nohup ./runInstaller -silent -force -responseFile /home/oracle/inst-db.rsp > /home/oracle/inst-db.log 2> /home/oracle/inst-db.err &
 
-./runInstaller -silent -ignorePrereq -responseFile <complete_path>/db_install.rsp
+# Login as root and run the following:
+/u01/app/oracle/11.2.0/dbhome_1/root.sh
 
 ```
