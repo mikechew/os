@@ -159,10 +159,11 @@ echo "- - -" > /sys/class/scsi_host/host2/scan
 grep mpt /sys/class/scsi_host/host?/proc_name
 ls /dev/sd*
 smartctl --scan
-echo -e "n\np\n1\n\n\nw" | fdisk /dev/sdb 
-echo -e "n\np\n1\n\n\nw" | fdisk /dev/sdc
+echo -e "\n\np\n1\n\n\nw" | fdisk /dev/sdb 
+echo -e "\n\np\n1\n\n\nw" | fdisk /dev/sdc
+ls /dev/sd*
 
-/etc/init.d/oracleasm deletedisk DATA
+# /etc/init.d/oracleasm deletedisk DATA
 /etc/init.d/oracleasm createdisk DATA1 /dev/sdb1
 /etc/init.d/oracleasm createdisk DATA2 /dev/sdc1
 oracleasm listdisks
