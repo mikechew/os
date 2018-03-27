@@ -176,6 +176,11 @@ chown oracle:oinstall /home/oracle/.Xauthority
 chmod 600 /home/oracle/.Xauthority
 su - oracle
 cd 
+
+sed -e '/^$/d' -e '/^ $/d' -e '/^#/d' grid.rsp
+# remove blank lines and #
+sed -e '/^$/d' -e '/^ $/d' -e '/^#/d' grid.rsp | perl -ne 'print  nless /^$/' 
+
 ./runInstaller -silent -force -responseFile /software/grid/response/grid.rsp
 ./runInstaller -silent -force -responseFile /software/grid/database/db_install.rsp
 
