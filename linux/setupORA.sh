@@ -309,4 +309,12 @@ nohup ./runInstaller -silent -force -responseFile /home/oracle/inst-db.rsp > /ho
 # Login as root and run the following:
 /u01/app/oracle/11.2.0/dbhome_1/root.sh
 
+# Login as oracle and run the following:
+# change the ORACLE_HOME to the Grid Home:
+netca
+lsnrctl status
+
+# change the ORACLE_HOME to the Database Home:
+dbca
+
 ```
