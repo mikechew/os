@@ -103,10 +103,10 @@ Install grid
 
 cat .bash_profile
 echo "# Grid" >> .bash_profile
-echo "export ORACLE_BASE=/u01/app/oracle/" >> .bash_profile
-echo "export ORACLE_HOME=/u01/app/11.2.0/grid" >> .bash_profile
+echo "export ORACLE_BASE=/u01/app/oracle" >> .bash_profile
+echo "export ORACLE_HOME=$ORACLE_BASE/11.2.0/grid" >> .bash_profile
 echo "# Oracle software" >> .bash_profile
-echo "# export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1" >> .bash_profile
+echo "# export ORACLE_HOME=$ORACLE_BASE/11.2.0/dbhome_1" >> .bash_profile
 echo "export ORACLE_HOSTNAME=melnaborcl" >> .bash_profile
 echo "export TMP=/tmp" >> .bash_profile
 echo "export TMPDIR=/tmp" >> .bash_profile
