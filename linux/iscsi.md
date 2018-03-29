@@ -361,3 +361,30 @@ The above returns 0, which means the port is open
 nc –z < ip-Linux_Windows_host > 3260
 ```
 reports on open ports, rather than initiate a connection
+
+## Uninstall packages
+
+To list the installed package:
+```
+yum list installed | grep iscsi
+iscsi-initiator-utils.x86_64
+```
+
+To remove (erase) the iscsi initiator package, run:
+```
+yum remove iscsi-initiator-utils , or 
+yum erase iscsi-initiator-utils
+```
+
+Find out the exact package name
+```
+rpm -qa | grep -i iscsi
+```
+iscsi-initiator-utils-6.2.0.872-10.el5
+Note: -qa : query all information
+
+To uninstall the package:
+```
+rpm –e iscsi-initiator-utils-6.2.0.872-10.el5
+```
+Note: -e : erase (remove) package
