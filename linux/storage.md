@@ -72,3 +72,72 @@ p
 w
 EOF
 ```
+
+To add a SCSI device in the host, we will need to rescan the SCSI bus:
+```
+echo "- - -" > /sys/class/scsi_host/host<h>/scan
+```
+
+You can also do this if you know the device SCSI location h:c:t:l
+```
+echo "c t l" >  /sys/class/scsi_host/host<h>/scan
+```
+
+Replace $HOST with the SCSI host you want to scan which could be host0, host1, host2, etc. Typically $HOST is host0.
+```
+echo "- - -" > /sys/class/scsi_host/$HOST/scan
+```
+
+To add a new disk, we will need to find the host bus number:
+```
+grep mpt /sys/class/scsi_host/host?/proc_name
+```
+
+You should be able to see the host bus number in the result of the grep command. Rescan the the bus by running (assuming the bus # is 2):
+```
+echo "- - -" > /sys/class/scsi_host/host2/scan
+```
+
+Use lsscsi to list the new block devices:
+```
+lsscsi
+```
+
+The “- - -“ defines the three values stored inside host*/scan i.e. channel number, SCSI target ID, and LUN values. We are simply replacing the values with wild cards so that it can detect new changes attached to the Linux box. This procedure will add LUNs, but not remove them.
+
+After you expand an existing disk, issue either of the following command to force the rereading of the disk geometry:
+
+```
+ls /sys/class/scsi_device/1\:0\:0\:0/device/
+ls /sys/block/sda/device/rescan 
+echo 1 > /sys/class/scsi_device/1\:0\:0\:0/device/rescan
+echo 1 > /sys/block/sda/device/rescan
+```
+
+Replace $DEVICE with sda, sdb, sdc, etc.
+```
+echo 1 > /sys/block/$DEVICE/device/rescan
+```
+
+```
+### To scan the newly added Disk
+for h in $ (ls -1 / sys / class / scsi_host); 
+echo "- - -"> / sys / class / scsi_host / $ h / scan; 
+done
+
+ls /sys/class/scsi_host/host?/proc_name | awk -F"/proc_name" '{ print $1"/scan" }' | while read adapter; do
+echo '- - -' > $adapter
+done
+```
+
+To remove a SCSI device from the system:
+```
+echo 1 > /sys/class/scsi_device/h:c:t:l/device/delete    , or
+echo 1 > /sys/block/<dev>/device/delete
+```
+
+where <dev> is like sda or sdb etc.
+h == hostadapter id (first one being 0)
+c == SCSI channel on hostadapter (first one being 0)
+t == ID
+l == LUN (first one being 0)
