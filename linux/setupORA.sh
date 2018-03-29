@@ -317,4 +317,20 @@ lsnrctl status
 # change the ORACLE_HOME to the Database Home:
 dbca
 
+dbca -silent -deleteDatabase -sourceDB demodb
+
+dbca -silent -createDatabase -gdbName demodb -sid demodb \
+     -emConfiguration NONE \
+     -storageType ASM \
+     -diskGroupName DATA3 \
+     -recoveryGroupName FRA \
+     -nodelist uxoel01,uxoel02 \
+     -characterSet AL32UTF8 \
+     -sampleSchema false \
+     -databaseType MULTIPURPOSE \
+     -memoryPercentage 12 \
+     -automaticMemoryManagement true \
+     -createAsContainerDatabase false \
+     -templateName $ORACLE_HOME/assistants/dbca/templates/General_Purpose.dbc
+
 ```
