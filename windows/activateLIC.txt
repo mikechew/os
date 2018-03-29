@@ -1,0 +1,23 @@
+## commandlines:
+
+```
+cscript.exe /B "c:\windows\system32\slmgr.vbs" -upk
+
+# display the current license information of Windows with activation status and 
+# last 5 characters of partial product key
+c:\windows\system32\slmgr /dli
+
+# display license information, verbose, similar to -dli switch but with
+# more detailed information
+c:\windows\system32\slmgr /dlv
+
+# uninstall current installed product key and return license status back to trial state
+c:\windows\system32\slmgr /upk 
+
+# activate Windows Vista license and product key against Microsoft’s server)
+c:\windows\system32\slmgr /ato 
+
+# enter a new or replace and change the current product key with the new product key 
+# supplied at xxxxx-xxxxx-xxxxx-xxxxx-xxxxx
+c:\windows\system32\slmgr /ipk BBX4Q-834BQ-RPM9Q-V3FP9-YDFPT 
+```
