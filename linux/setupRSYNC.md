@@ -116,4 +116,15 @@ rsync options source destination
 
 # By default rsync syncs changed blocks and bytes only, if you want explicitly want to sync whole file using the ‘-W‘ option
 # rsync -zvhW backup.tar /tmp/backups/backup.tar
+
+List files that were modified 30 days ago:
+find /path/directory -type f -mtime -30
+
+Remotely sync files that were modified 30 days ago:
+rsync -Ravh `find /path/directory -type f -mtime -30` user@remoteIP:/path/directory
+
+or, 
+
+find /path/directory -type f -mtime -30 > /tmp/filelist.txt
+rsync -Ravh --files-from=/tmp/filelist.txt user@remoteIP:/path/directory
 ```
