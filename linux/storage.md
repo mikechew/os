@@ -141,3 +141,22 @@ h == hostadapter id (first one being 0)
 c == SCSI channel on hostadapter (first one being 0)
 t == ID
 l == LUN (first one being 0)
+
+
+The task of removing the disk device is a 2 step process and this is how we do it. Here /dev/sdb is the disk we want to remove from the host
+
+1. Mark the device as OFFLINE
+```
+# echo "offline" > /sys/block/sdb/device/state
+```
+
+2. Delete disk from system
+
+```
+# echo "1" > /sys/block/sdb/device/delete
+```
+
+This should remove the disk and clean up entries under /dev/ and fdisk cannot see the disk any longer.
+```
+# fdisk -l
+``` 
